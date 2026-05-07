@@ -2,21 +2,14 @@ name: Deploy Docs
 on:
   push:
     branches:
-      - master # Проверьте, что ваша ветка называется master, а не main
+      - master
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: 3.x
-
-      - name: Install dependencies
-        run: |
-          pip install mkdocs-material mkdocs-print-site-plugin
-          
-      - name: Build and Deploy
-        run: mkdocs gh-deploy --force
+      - run: pip install mkdocs-material mkdocs-print-site-plugin
+      - run: mkdocs gh-deploy --force
