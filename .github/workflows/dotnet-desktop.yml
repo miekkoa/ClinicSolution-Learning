@@ -1,55 +1,16 @@
-name: Clinic Automated Testing
-
-# Когда запускать? При пуше в ветку master
-
+name: Clinic Deploy
 on:
-
   push:
-
-    branches: [ "master" ]
-
-  pull_request:
-
-    branches: [ "master" ]
-
+    branches:
+      - master # убедитесь, что ваша главная ветка называется master
 jobs:
-
-  build-and-test:
-
-    runs-on: ubuntu-latest # Тесты будут идти на Linux-сервере
-
+  deploy:
+    runs-on: ubuntu-latest
     steps:
-
-    # 1. Скачиваем код из репозитория
-
-    - uses: actions/checkout@v3
-
-    # 2. Устанавливаем .NET (GitHub сам подберет версию или укажите 6.0/7.0/8.0)
-
-    - name: Setup .NET
-
-      uses: actions/setup-dotnet@v3
-
-      with:
-
-        dotnet-version: 8.0.x # Укажите ту версию, которую выбирали при создании проекта!
-
-    # 3. Восстанавливаем библиотеки
-
-    - name: Restore dependencies
-
-      run: dotnet restore
-
-    # 4. Собираем проект
-
-    - name: Build
-
-      run: dotnet build --no-restore
-
-    # 5. ЗАПУСКАЕМ ТЕСТЫ
-
-    - name: Test
-
-      run: dotnet test --no-build --verbosity normal
-
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+      - run: pip install mkdocs-material mkdocs-print-site-plugin
+      - run: mkdocs gh-deploy --force
 
